@@ -1,24 +1,49 @@
 package com.distribuida.model;
 
 import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "factura")
 public class Factura {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_factura")
     private int idFactura;
+
+    @Column(name = "num_factura")
     private String numFactura;
+
+    @Column(name = "fecha")
     private LocalDateTime fecha;
-    private float totalNeto;
-    private float iva;
-    private float total;
-    private int idCliente;
+
+    @Column(name = "total_neto")
+    private Double totalNeto;
+
+    @Column(name = "iva")
+    private Double iva;
+
+    @Column(name = "total")
+    private Double total;
+
+    // inyección de dependencias
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
+
+    public Factura() {
+    }
+
     //constructor
     public Factura(int idFactura, String numFactura, LocalDateTime fecha, float totalNeto, float iva, float total, int idCliente) {
         this.idFactura = idFactura;
         this.numFactura = numFactura;
         this.fecha = fecha;
-        this.totalNeto = totalNeto;
-        this.iva = iva;
-        this.total = total;
-        this.idCliente = idCliente;
+        this.totalNeto = (double) totalNeto;
+        this.iva = (double) iva;
+        this.total = (double) total;
+
     }
     //getters and setters
     public int getIdFactura() {
@@ -30,18 +55,19 @@ public class Factura {
     public LocalDateTime getFecha() {
         return fecha;
     }
-    public float getTotalNeto() {
+    public Double getTotalNeto() {
         return totalNeto;
     }
-    public float getIva() {
+    public double getIva() {
         return iva;
     }
-    public float getTotal() {
+    public double getTotal() {
         return total;
     }
-    public int getIdCliente() {
-        return idCliente;
+    public Integer getIdCliente() {
+        return cliente != null ? cliente.getIdCliente() : null;
     }
+
     public void setNumFactura(String numFactura) {
         this.numFactura = numFactura;
     }
@@ -49,17 +75,34 @@ public class Factura {
         this.fecha = fecha;
     }
     public void setTotalNeto(float totalNeto) {
-        this.totalNeto = totalNeto;
+        this.totalNeto = (double) totalNeto;
     }
     public void setIva(float iva) {
-        this.iva = iva;
+        this.iva = (double) iva;
     }
     public void setTotal(float total) {
-        this.total = total;
+        this.total = (double) total;
     }
+
+    public void setIdFactura(int idFactura) {
+        this.idFactura = idFactura;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+        if (this.cliente == null) {
+            this.cliente = new Cliente();
+        }
+        this.cliente.setIdCliente(idCliente);
     }
+
     @Override
     public String toString() {
         return "Factura{" +
@@ -69,7 +112,7 @@ public class Factura {
                 ", totalNeto=" + totalNeto +
                 ", iva=" + iva +
                 ", total=" + total +
-                ", idCliente=" + idCliente +
+
                 '}';
     }
 }

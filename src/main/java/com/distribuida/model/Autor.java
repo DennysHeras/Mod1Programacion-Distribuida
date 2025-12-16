@@ -1,14 +1,30 @@
 package com.distribuida.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "autor")
 public class Autor {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_autor")
     private int idAutor;
+
+    @Column(name = "nombre")
     private String nombre;
+
+    @Column(name = "apellido")
     private String apellido;
+
+    @Column(name = "nacionalidad")
     private String nacionalidad;
+
+    @Column(name = "descripcion")
     private String descripcion;
 
-
+    public Autor() {
+    }
 
     //constructor
     public Autor(int idAutor, String nombre, String apellido, String nacionalidad, String descripcion) {
