@@ -1,25 +1,66 @@
 package com.distribuida.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "libro")
 public class Libro {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_libro")
     private int idLibro;
+
+    @Column(name = "titulo")
     private String titulo;
+
+    @Column(name = "editorial")
     private String editorial;
+
+    @Column(name = "num_paginas")
     private int numPaginas;
+
+    @Column(name = "edicion")
     private String edicion;
+
+    @Column(name = "idioma")
     private String idioma;
+
+    @Column(name = "fecha_publicacion")
     private LocalDateTime fechaPublicacion;
+
+    @Column(name = "descripcion")
     private String descripcion;
+
+    @Column(name = "tipo_pasta")
     private String tipoPasta;
+
+    @Column(name = "ISBN")
     private String ISBN;
+
+    @Column(name = "num_ejemplares")
     private int numEjemplares;
+
+    @Column(name = "portada")
     private String portada;
+
+    @Column(name = "presentacion")
     private String presentacion;
+
+    @Column(name = "precio")
     private float precio;
-    private int idCategoria;
-    private int idAutor;
+
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
+
+    @ManyToOne
+    @JoinColumn(name = "id_autor")
+    private Autor autor;
+
+    public Libro() {
+    }
 
     //constructor
     public Libro(int idLibro, String titulo, String editorial, int numPaginas, String edicion, String idioma, LocalDateTime fechaPublicacion, String descripcion, String tipoPasta, String ISBN, int numEjemplares, String portada, String presentacion, float precio, int idCategoria, int idAutor) {
@@ -37,8 +78,7 @@ public class Libro {
         this.portada = portada;
         this.presentacion = presentacion;
         this.precio = precio;
-        this.idCategoria = idCategoria;
-        this.idAutor = idAutor;
+        // Las relaciones deben establecerse después con setCategoria() y setAutor()
     }
 
     //getters and setters
@@ -84,11 +124,11 @@ public class Libro {
     public float getPrecio() {
         return precio;
     }
-    public int getIdCategoria() {
-        return idCategoria;
+    public Integer getIdCategoria() {
+        return categoria != null ? categoria.getIdCategoria() : null;
     }
-    public int getIdAutor() {
-        return idAutor;
+    public Integer getIdAutor() {
+        return autor != null ? autor.getIdAutor() : null;
     }
     public void setTitulo(String titulo) {
         this.titulo = titulo;
@@ -130,10 +170,36 @@ public class Libro {
         this.precio = precio;
     }
     public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
+        if (this.categoria == null) {
+            this.categoria = new Categoria();
+        }
+        this.categoria.setIdCategoria(idCategoria);
     }
     public void setIdAutor(int idAutor) {
-        this.idAutor = idAutor;
+        if (this.autor == null) {
+            this.autor = new Autor();
+        }
+        this.autor.setIdAutor(idAutor);
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public Autor getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Autor autor) {
+        this.autor = autor;
+    }
+
+    public void setIdLibro(int idLibro) {
+        this.idLibro = idLibro;
     }
 
     @Override
@@ -153,8 +219,8 @@ public class Libro {
                 ", portada='" + portada + '\'' +
                 ", presentacion='" + presentacion + '\'' +
                 ", precio=" + precio +
-                ", idCategoria=" + idCategoria +
-                ", idAutor=" + idAutor +
+                ", idCategoria=" + getIdCategoria() +
+                ", idAutor=" + getIdAutor() +
                 '}';
     }
 }
