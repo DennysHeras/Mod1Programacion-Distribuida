@@ -43,7 +43,7 @@ public class Factura {
         this.totalNeto = (double) totalNeto;
         this.iva = (double) iva;
         this.total = (double) total;
-
+        setIdCliente(idCliente);
     }
     //getters and setters
     public int getIdFactura() {
@@ -112,7 +112,7 @@ public class Factura {
                 ", totalNeto=" + totalNeto +
                 ", iva=" + iva +
                 ", total=" + total +
-
+                ", idCliente=" + getIdCliente() +
                 '}';
     }
 }

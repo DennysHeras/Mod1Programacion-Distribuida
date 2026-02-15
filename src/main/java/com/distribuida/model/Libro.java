@@ -1,5 +1,6 @@
 package com.distribuida.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -37,6 +38,7 @@ public class Libro {
     private String tipoPasta;
 
     @Column(name = "ISBN")
+    @JsonProperty("isbn")
     private String ISBN;
 
     @Column(name = "num_ejemplares")
@@ -78,7 +80,8 @@ public class Libro {
         this.portada = portada;
         this.presentacion = presentacion;
         this.precio = precio;
-        // Las relaciones deben establecerse después con setCategoria() y setAutor()
+        setIdCategoria(idCategoria);
+        setIdAutor(idAutor);
     }
 
     //getters and setters

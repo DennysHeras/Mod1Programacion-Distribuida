@@ -33,7 +33,9 @@ public class FacturaDetalle {
         this.idFacturaDetalle = idFacturaDetalle;
         this.cantidad = cantidad;
         this.subtotal = subtotal;
-       
+        setIdFactura(idFactura);
+        this.libro = new Libro();
+        this.libro.setIdLibro(idLibro);
     }
 
     //getters and setters
@@ -65,8 +67,10 @@ public class FacturaDetalle {
         this.factura.setIdFactura(idFactura);
     }
     public void setIdLibro(int idLibro) {
-        // Este método se usa para compatibilidad pero Libro no tiene setIdLibro
-        // Se debe usar setLibro() directamente con una instancia de Libro
+        if (this.libro == null) {
+            this.libro = new Libro();
+        }
+        this.libro.setIdLibro(idLibro);
     }
 
     public Factura getFactura() {

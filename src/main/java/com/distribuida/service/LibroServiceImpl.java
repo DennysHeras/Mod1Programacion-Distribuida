@@ -1,5 +1,7 @@
 package com.distribuida.service;
 
+import com.distribuida.dao.AutorRepository;
+import com.distribuida.dao.CategoriaRepository;
 import com.distribuida.dao.LibroRepository;
 import com.distribuida.model.Libro;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,10 @@ public class LibroServiceImpl implements LibroService {
 
     @Autowired
     private LibroRepository libroRepository;
+    @Autowired
+    private AutorRepository autorRepository;
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     @Override
     public List<Libro> findAll() {
@@ -26,7 +32,17 @@ public class LibroServiceImpl implements LibroService {
 
     @Override
     public Libro save(Libro libro) {
+        asignarReferencias(libro);
         return libroRepository.save(libro);
+    }
+
+    private void asignarReferencias(Libro libro) {
+        if (libro.getAutor() != null && libro.getAutor().getIdAutor() != 0) {
+            autorRepository.findById(libro.getAutor().getIdAutor()).ifPresent(libro::setAutor);
+        }
+        if (libro.getCategoria() != null && libro.getCategoria().getIdCategoria() != 0) {
+            categoriaRepository.findById(libro.getCategoria().getIdCategoria()).ifPresent(libro::setCategoria);
+        }
     }
 
     @Override
@@ -34,6 +50,7 @@ public class LibroServiceImpl implements LibroService {
         if (libro.getIdLibro() == 0) return null;
         Optional<Libro> opt = libroRepository.findById(libro.getIdLibro());
         if (opt.isEmpty()) return null;
+        asignarReferencias(libro);
         Libro actual = opt.get();
         actual.setTitulo(libro.getTitulo());
         actual.setEditorial(libro.getEditorial());

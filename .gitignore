@@ -39,3 +39,8 @@ out/
 ### Documentos temporales ###
 ~$*
 *.docx
+
+### Angular ###
+libreria-app/node_modules/
+libreria-app/dist/
+libreria-app/.angular/
