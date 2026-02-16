@@ -46,5 +46,7 @@ public class FacturaDetalleController {
         if (facturaDetalleService.findById(id).isEmpty()) return ResponseEntity.notFound().build();
         facturaDetalleService.deleteById(id);
         return ResponseEntity.noContent().build();
+
+
     }
 }

@@ -47,4 +47,5 @@ public class AutorController {
         autorService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
 }
