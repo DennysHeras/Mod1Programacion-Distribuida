@@ -1,0 +1,45 @@
+<div style="padding: 20px; font-family: Arial;">
+  <h2>Módulo Libro</h2>
+  <h3>{{ editando ? 'Editar Libro' : 'Agregar Libro' }}</h3>
+  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px 16px; margin-bottom:12px; align-items:start;">
+    <div><label style="display:block; font-size:12px; color:#555; margin-bottom:2px;">Título</label><input [(ngModel)]="libro.titulo" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555; margin-bottom:2px;">Editorial</label><input [(ngModel)]="libro.editorial" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555; margin-bottom:2px;">Edición</label><input [(ngModel)]="libro.edicion" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555; margin-bottom:2px;">Idioma</label><input [(ngModel)]="libro.idioma" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555; margin-bottom:2px;">N° páginas</label><input type="number" [(ngModel)]="libro.numPaginas" min="0" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555; margin-bottom:2px;">Tipo pasta</label><input [(ngModel)]="libro.tipoPasta" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555; margin-bottom:2px;">ISBN</label><input [(ngModel)]="libro.isbn" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555; margin-bottom:2px;">N° ejemplares</label><input type="number" [(ngModel)]="libro.numEjemplares" min="0" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555; margin-bottom:2px;">Precio</label><input type="number" [(ngModel)]="libro.precio" min="0" step="0.01" style="width:100%;" /></div>
+  </div>
+  <div style="margin-bottom:12px;">
+    <label>Autor:</label>
+    <select [(ngModel)]="libro.idAutor" required style="margin-left:8px; min-width:200px;">
+      <option [ngValue]="null">-- Seleccionar --</option>
+      <option *ngFor="let a of autores" [ngValue]="a.idAutor">{{ a.nombre }} {{ a.apellido }}</option>
+    </select>
+    <label style="margin-left:16px;">Categoría:</label>
+    <select [(ngModel)]="libro.idCategoria" required style="margin-left:8px; min-width:200px;">
+      <option [ngValue]="null">-- Seleccionar --</option>
+      <option *ngFor="let c of categorias" [ngValue]="c.idCategoria">{{ c.categoria }}</option>
+    </select>
+  </div>
+  <textarea [(ngModel)]="libro.descripcion" rows="3" style="width:100%; margin-bottom:10px;"></textarea>
+  <button (click)="guardar()">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+  <button (click)="cancelar()" style="margin-left:8px;">Cancelar</button>
+  <hr />
+  <h3>Lista de Libros ({{ libros.length }})</h3>
+  <table border="1" cellpadding="6" style="width:100%; border-collapse:collapse;">
+    <thead><tr><th>ID</th><th>Título</th><th>Editorial</th><th>Idioma</th><th>Precio</th><th>Acciones</th></tr></thead>
+    <tbody>
+      <tr *ngFor="let l of libros">
+        <td>{{ l.idLibro }}</td>
+        <td>{{ l.titulo }}</td>
+        <td>{{ l.editorial }}</td>
+        <td>{{ l.idioma }}</td>
+        <td>{{ l.precio }}</td>
+        <td><button (click)="editar(l)">Editar</button> <button (click)="eliminar(l.idLibro)" style="margin-left:6px;">Eliminar</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

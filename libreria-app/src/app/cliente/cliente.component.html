@@ -1,0 +1,29 @@
+<div style="padding: 20px; font-family: Arial;">
+  <h2>Módulo Cliente</h2>
+  <h3>{{ editando ? 'Editar Cliente' : 'Agregar Cliente' }}</h3>
+  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px 16px; margin-bottom:12px;">
+    <div><label style="display:block; font-size:12px; color:#555;">Cédula</label><input [(ngModel)]="cliente.cedula" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555;">Nombre</label><input [(ngModel)]="cliente.nombre" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555;">Apellido</label><input [(ngModel)]="cliente.apellido" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555;">Dirección</label><input [(ngModel)]="cliente.direccion" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555;">Teléfono</label><input [(ngModel)]="cliente.telefono" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555;">Correo</label><input [(ngModel)]="cliente.correo" type="email" style="width:100%;" /></div>
+  </div>
+  <button (click)="guardar()">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+  <button (click)="cancelar()" style="margin-left:8px;">Cancelar</button>
+  <hr />
+  <h3>Lista ({{ clientes.length }})</h3>
+  <table border="1" cellpadding="6" style="width:100%; border-collapse:collapse;">
+    <thead><tr><th>ID</th><th>Cédula</th><th>Nombre</th><th>Apellido</th><th>Correo</th><th>Acciones</th></tr></thead>
+    <tbody>
+      <tr *ngFor="let c of clientes">
+        <td>{{ c.idCliente }}</td>
+        <td>{{ c.cedula }}</td>
+        <td>{{ c.nombre }}</td>
+        <td>{{ c.apellido }}</td>
+        <td>{{ getCorreo(c) }}</td>
+        <td><button (click)="editar(c)">Editar</button> <button (click)="eliminar(c.idCliente)" style="margin-left:6px;">Eliminar</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

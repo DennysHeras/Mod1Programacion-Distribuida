@@ -1,0 +1,26 @@
+<div style="padding: 20px; font-family: Arial;">
+  <h2>Módulo Autor</h2>
+  <h3>{{ editando ? 'Editar Autor' : 'Agregar Autor' }}</h3>
+  <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:12px 16px; margin-bottom:12px;">
+    <div><label style="display:block; font-size:12px; color:#555;">Nombre</label><input [(ngModel)]="autor.nombre" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555;">Apellido</label><input [(ngModel)]="autor.apellido" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555;">Nacionalidad</label><input [(ngModel)]="autor.nacionalidad" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555;">Descripción</label><input [(ngModel)]="autor.descripcion" style="width:100%;" /></div>
+  </div>
+  <button (click)="guardar()">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+  <button (click)="cancelar()" style="margin-left:8px;">Cancelar</button>
+  <hr />
+  <h3>Lista ({{ autores.length }})</h3>
+  <table border="1" cellpadding="6" style="width:100%; border-collapse:collapse;">
+    <thead><tr><th>ID</th><th>Nombre</th><th>Apellido</th><th>Nacionalidad</th><th>Acciones</th></tr></thead>
+    <tbody>
+      <tr *ngFor="let a of autores">
+        <td>{{ a.idAutor }}</td>
+        <td>{{ a.nombre }}</td>
+        <td>{{ a.apellido }}</td>
+        <td>{{ a.nacionalidad }}</td>
+        <td><button (click)="editar(a)">Editar</button> <button (click)="eliminar(a.idAutor)" style="margin-left:6px;">Eliminar</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

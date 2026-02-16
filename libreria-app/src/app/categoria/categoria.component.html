@@ -1,0 +1,23 @@
+<div style="padding: 20px; font-family: Arial;">
+  <h2>Módulo Categoría</h2>
+  <h3>{{ editando ? 'Editar Categoría' : 'Agregar Categoría' }}</h3>
+  <div style="display:grid; grid-template-columns: 1fr 2fr; gap:12px 16px; margin-bottom:12px;">
+    <div><label style="display:block; font-size:12px; color:#555;">Categoría</label><input [(ngModel)]="categoria.categoria" style="width:100%;" /></div>
+    <div><label style="display:block; font-size:12px; color:#555;">Descripción</label><input [(ngModel)]="categoria.descripcion" style="width:100%;" /></div>
+  </div>
+  <button (click)="guardar()">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+  <button (click)="cancelar()" style="margin-left:8px;">Cancelar</button>
+  <hr />
+  <h3>Lista ({{ categorias.length }})</h3>
+  <table border="1" cellpadding="6" style="width:100%; border-collapse:collapse;">
+    <thead><tr><th>ID</th><th>Categoría</th><th>Descripción</th><th>Acciones</th></tr></thead>
+    <tbody>
+      <tr *ngFor="let c of categorias">
+        <td>{{ c.idCategoria }}</td>
+        <td>{{ c.categoria }}</td>
+        <td>{{ c.descripcion }}</td>
+        <td><button (click)="editar(c)">Editar</button> <button (click)="eliminar(c.idCategoria)" style="margin-left:6px;">Eliminar</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
