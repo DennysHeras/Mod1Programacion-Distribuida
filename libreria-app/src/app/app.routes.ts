@@ -5,5 +5,6 @@ export const routes: Routes = [
   { path: 'libros', loadComponent: () => import('./libro/libro.component').then(m => m.LibroComponent) },
   { path: 'clientes', loadComponent: () => import('./cliente/cliente.component').then(m => m.ClienteComponent) },
   { path: 'autores', loadComponent: () => import('./autor/autor.component').then(m => m.AutorComponent) },
-  { path: 'categorias', loadComponent: () => import('./categoria/categoria.component').then(m => m.CategoriaComponent) }
+  { path: 'categorias', loadComponent: () => import('./categoria/categoria.component').then(m => m.CategoriaComponent) },
+  { path: 'ventas', loadComponent: () => import('./ventas/ventas.component').then(m => m.VentasComponent) }
 ];

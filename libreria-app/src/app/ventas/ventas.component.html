@@ -1,0 +1,139 @@
+<div style="padding:20px; font-family:Arial; display:grid; grid-template-columns:1fr 420px; gap:24px; align-items:start;">
+
+  <!-- ═══════════════ CATÁLOGO DE LIBROS ═══════════════ -->
+  <div>
+    <h2 style="margin-top:0;">📚 Catálogo de Libros</h2>
+
+    <input [(ngModel)]="busqueda" placeholder="🔍 Buscar por título o autor..."
+           style="width:100%; padding:8px; margin-bottom:12px; box-sizing:border-box; border:1px solid #ccc; border-radius:4px;" />
+
+    <table border="1" cellpadding="7" cellspacing="0"
+           style="width:100%; border-collapse:collapse; font-size:13px;">
+      <thead style="background:#333; color:#fff;">
+        <tr>
+          <th>Título</th>
+          <th>Editorial</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let libro of librosFiltrados"
+            style="border-bottom:1px solid #ddd;">
+          <td>{{ libro.titulo }}</td>
+          <td>{{ libro.editorial }}</td>
+          <td style="text-align:right;">${{ libro.precio | number:'1.2-2' }}</td>
+          <td style="text-align:center;">
+            <span [style.background]="libro.numEjemplares > 0 ? '#28a745' : '#dc3545'"
+                  style="color:#fff; padding:2px 8px; border-radius:10px; font-size:11px;">
+              {{ libro.numEjemplares > 0 ? libro.numEjemplares : 'Sin stock' }}
+            </span>
+          </td>
+          <td style="text-align:center;">
+            <button (click)="agregarAlCarrito(libro)"
+                    [disabled]="libro.numEjemplares === 0"
+                    style="padding:4px 12px; cursor:pointer; background:#007bff; color:#fff; border:none; border-radius:4px;">
+              {{ feedbackLibro[libro.idLibro!] || '+ Agregar' }}
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="librosFiltrados.length === 0">
+          <td colspan="5" style="text-align:center; color:#999; padding:20px;">
+            No se encontraron libros
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════════════ CARRITO ═══════════════ -->
+  <div style="border:1px solid #ddd; border-radius:8px; padding:16px; background:#fafafa;">
+    <h2 style="margin-top:0;">🛒 Carrito
+      <span style="font-size:13px; color:#555; font-weight:normal;"
+            *ngIf="carrito && carrito.items.length > 0">
+        ({{ carrito.items.length }} producto{{ carrito.items.length > 1 ? 's' : '' }})
+      </span>
+    </h2>
+
+    <!-- Vacío -->
+    <div *ngIf="!carrito || carrito.items.length === 0"
+         style="text-align:center; color:#999; padding:30px 0;">
+      <div style="font-size:40px;">🛒</div>
+      <p>El carrito está vacío</p>
+    </div>
+
+    <!-- Items -->
+    <div *ngIf="carrito && carrito.items.length > 0">
+      <div *ngFor="let item of carrito.items"
+           style="display:flex; align-items:center; justify-content:space-between;
+                  padding:8px 0; border-bottom:1px solid #eee; gap:8px;">
+        <div style="flex:1; font-size:13px;">
+          <strong>{{ item.libro.titulo }}</strong><br/>
+          <span style="color:#555;">${{ item.precioUnitario | number:'1.2-2' }} c/u</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:4px;">
+          <button (click)="decrementar(item.libro.idLibro!, item.cantidad)"
+                  style="width:26px; height:26px; cursor:pointer;">−</button>
+          <span style="min-width:24px; text-align:center; font-weight:bold;">{{ item.cantidad }}</span>
+          <button (click)="incrementar(item.libro.idLibro!, item.cantidad)"
+                  style="width:26px; height:26px; cursor:pointer;">+</button>
+        </div>
+        <div style="min-width:60px; text-align:right; font-weight:bold;">
+          ${{ item.total | number:'1.2-2' }}
+        </div>
+        <button (click)="eliminarItem(item.libro.idLibro!)"
+                style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:16px;">✕</button>
+      </div>
+
+      <!-- Totales -->
+      <table style="width:100%; margin-top:12px; font-size:13px;">
+        <tr>
+          <td>Subtotal:</td>
+          <td style="text-align:right;">${{ carrito.subtotal | number:'1.2-2' }}</td>
+        </tr>
+        <tr>
+          <td>IVA (15%):</td>
+          <td style="text-align:right;">${{ carrito.impuestos | number:'1.2-2' }}</td>
+        </tr>
+        <tr style="font-weight:bold; font-size:15px; border-top:2px solid #333;">
+          <td>TOTAL:</td>
+          <td style="text-align:right;">${{ carrito.total | number:'1.2-2' }}</td>
+        </tr>
+      </table>
+
+      <!-- Botones -->
+      <div style="margin-top:12px; display:flex; gap:8px;">
+        <button (click)="vaciarCarrito()"
+                style="flex:1; padding:8px; background:#6c757d; color:#fff;
+                       border:none; border-radius:4px; cursor:pointer;">
+          🗑 Vaciar
+        </button>
+        <button (click)="checkout()" [disabled]="procesando"
+                style="flex:2; padding:8px; background:#28a745; color:#fff;
+                       border:none; border-radius:4px; cursor:pointer; font-weight:bold;">
+          {{ procesando ? 'Procesando...' : '💳 Pagar ahora' }}
+        </button>
+      </div>
+
+      <p *ngIf="errorMsg" style="color:#dc3545; font-size:13px; margin-top:8px;">{{ errorMsg }}</p>
+    </div>
+
+    <!-- ═══ FACTURA GENERADA ═══ -->
+    <div *ngIf="facturaGenerada"
+         style="margin-top:16px; padding:14px; background:#d4edda;
+                border:1px solid #28a745; border-radius:6px;">
+      <h3 style="margin:0 0 10px 0; color:#155724;">✅ ¡Pago realizado!</h3>
+      <table style="width:100%; font-size:13px;">
+        <tr><td>N° Factura:</td><td style="text-align:right; font-weight:bold;">{{ facturaGenerada.numFactura }}</td></tr>
+        <tr><td>Subtotal:</td><td style="text-align:right;">${{ facturaGenerada.totalNeto | number:'1.2-2' }}</td></tr>
+        <tr><td>IVA (15%):</td><td style="text-align:right;">${{ facturaGenerada.iva | number:'1.2-2' }}</td></tr>
+        <tr style="font-weight:bold; border-top:1px solid #28a745;">
+          <td>TOTAL PAGADO:</td>
+          <td style="text-align:right;">${{ facturaGenerada.total | number:'1.2-2' }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div>

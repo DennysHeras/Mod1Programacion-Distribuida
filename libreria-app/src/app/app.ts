@@ -11,7 +11,8 @@ import { CommonModule } from '@angular/common';
       <a routerLink="/libros" routerLinkActive="active" style="color:#fff; margin-right:16px; text-decoration:none;">Libros</a>
       <a routerLink="/clientes" routerLinkActive="active" style="color:#fff; margin-right:16px; text-decoration:none;">Clientes</a>
       <a routerLink="/autores" routerLinkActive="active" style="color:#fff; margin-right:16px; text-decoration:none;">Autores</a>
-      <a routerLink="/categorias" routerLinkActive="active" style="color:#fff; text-decoration:none;">Categorías</a>
+      <a routerLink="/categorias" routerLinkActive="active" style="color:#fff; margin-right:16px; text-decoration:none;">Categorías</a>
+      <a routerLink="/ventas" routerLinkActive="active" style="color:#fff; text-decoration:none;">🛒 Ventas</a>
     </nav>
     <router-outlet></router-outlet>
   `,
